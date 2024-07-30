@@ -1,8 +1,10 @@
+import Address from "./address";
+
 class Customer {
 
   _id: string;
   _name: string = "";
-  _address: string = "";
+  _address!: Address;
   _active: boolean = false;
 
 
@@ -21,17 +23,17 @@ class Customer {
     }
   }
   
-  changeName(name: string): void {
+  changeName(name: string) {
     this._name = name;
     this.validate();
   }
 
-  changeAddress(address: string): void {
+  changeAddress(address: Address) {
     this._address = address;
   }
 
   activate() {
-    if (this._address.length === 0) {
+    if (this._address === undefined) {
       throw new Error("Address is mandatory to activate a customer");      
     }
     this._active = true;
@@ -39,5 +41,9 @@ class Customer {
 
   deactivate() {
     this._active = false;
+  }
+
+  set Address(address: Address) {
+    this._address = address;
   }
 }
