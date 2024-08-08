@@ -1,7 +1,6 @@
 import Address from "./address";
 
 export default class Customer {
-
   private _id: string;
   private _name: string = "";
   private _address!: Address;
@@ -46,6 +45,10 @@ export default class Customer {
 
   changeAddress(address: Address) {
     this._address = address;
+  }
+
+  get Address(): Address {
+    return this._address;
   }
 
   activate() {

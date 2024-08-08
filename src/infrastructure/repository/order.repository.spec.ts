@@ -1,6 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
 import CustomerModel from "../db/sequelize/model/customer.model";
-import OrderModel from "../db/sequelize/model/order.model";
 import OrderItemModel from "../db/sequelize/model/order-item.model";
 import ProductModel from "../db/sequelize/model/product.model";
 import Customer from "../../domain/entity/customer";
@@ -10,6 +9,8 @@ import Product from "../../domain/entity/product";
 import ProductRepository from "./product.repository";
 import Order from "../../domain/entity/order";
 import OrderItem from "../../domain/entity/order_item";
+import OrderRepository from "./order.repository";
+import OrderModel from "../db/sequelize/model/order.model";
 
 describe("Order repository test", () => {
   let sequelize: Sequelize;
@@ -22,13 +23,18 @@ describe("Order repository test", () => {
       sync: { force: true },
     });
 
-    sequelize.addModels([CustomerModel, OrderModel, OrderItemModel, ProductModel]);
+    sequelize.addModels([
+      CustomerModel,
+      OrderModel,
+      OrderItemModel,
+      ProductModel,
+    ]);
     await sequelize.sync();
   });
 
   afterEach(async () => {
     await sequelize.close();
-  });  
+  }); 
 
   it("should create an order", async () => {
     const customerRepository = new CustomerRepository();
@@ -56,14 +62,15 @@ describe("Order repository test", () => {
 
     expect(orderModel.toJSON()).toStrictEqual({
       id: "123",
-      customerId: "123",
+      customer_id: "123",
       total: order.total(),
       items: [{
         id: orderItem.id,
         name: orderItem.name,
         price: orderItem.price,
         quantity: orderItem.quantity,
-        productId: "123",
+        order_id: "123",
+        product_id: "123",
       }],
     });
   });
